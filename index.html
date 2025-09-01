@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHACHA'T FEST - ¡El Festival Más Divertido del Año!</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+        
+        :root {
+            --color-primary: #FF6B8B;
+            --color-secondary: #4ECDC4;
+            --color-accent: #FFE66D;
+            --color-dark: #1A535C;
+            --color-light: #F7FFF7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .navbar {
+            background-color: var(--color-primary) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem !important;
+            color: var(--color-light) !important;
+            text-shadow: 2px 2px 0 var(--color-dark);
+        }
+        
+        .nav-link {
+            color: var(--color-light) !important;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            transform: scale(1.1);
+            color: var(--color-accent) !important;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        .fest-title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--color-dark);
+            text-shadow: 3px 3px 0 var(--color-accent);
+            margin-bottom: 20px;
+        }
+        
+        .fest-subtitle {
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            margin-bottom: 30px;
+        }
+        
+        .btn-fest {
+            background-color: var(--color-secondary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 0 var(--color-dark);
+        }
+        
+        .btn-fest:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 0 var(--color-dark);
+            background-color: var(--color-accent);
+            color: var(--color-dark);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 40px 0;
+            font-weight: 800;
+            color: var(--color-primary);
+            text-shadow: 2px 2px 0 var(--color-accent);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 6px;
+            background: var(--color-secondary);
+            margin: 10px auto;
+            border-radius: 3px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-title {
+            color: var(--color-primary);
+            font-weight: 800;
+        }
+        
+        .artist-card {
+            text-align: center;
+        }
+        
+        .artist-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto;
+            border: 5px solid var(--color-accent);
+        }
+        
+        .countdown-box {
+            background-color: var(--color-dark);
+            color: white;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            margin: 10px;
+            min-width: 100px;
+        }
+        
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--color-accent);
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .gallery-img {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid var(--color-secondary);
+        }
+        
+        .form-control:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 139, 0.25);
+        }
+        
+        footer {
+            background-color: var(--color-dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .social-icon {
+            font-size: 1.5rem;
+            color: white;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            color: var(--color-accent);
+            transform: scale(1.2);
+        }
+        
+        .has-shake:hover {
+            animation: shake 0.5s;
+            animation-iteration-count: infinite;
+        }
+        
+        /* Estilos para el formulario de WhatsApp */
+        .whatsapp-form .row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .whatsapp-form .row > div {
+            flex: 1;
+        }
+        
+        /* Animaciones */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        
+        @keyframes color-change {
+            0% { color: var(--color-primary); }
+            25% { color: var(--color-secondary); }
+            50% { color: var(--color-accent); }
+            75% { color: var(--color-dark); }
+            100% { color: var(--color-primary); }
+        }
+        
+        .color-animation {
+            animation: color-change 5s infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .fest-title {
+                font-size: 2.5rem;
+            }
+            
+            .fest-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+            
+            .whatsapp-form .row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-music me-2"></i>CHACHA'T FEST
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#artistas">Artistas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#programacion">Programación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ubicacion">Ubicación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#boletos">Boletos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="py-5">
+        <div class="container text-center py-5">
+            <h1 class="fest-title">CHACHA'T FEST</h1>
+            <p class="fest-subtitle">¡El evento más divertido y colorido del año!</p>
+            <p class="lead mb-4">19 de Septiembre 2025 | Complejo Fabril El Alto</p>
+            
+            <div class="d-flex justify-content-center mb-5">
+                <div class="countdown-box">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">Días</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Horas</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Minutos</div>
+                </div>
+            </div>
+            <button class="btn btn-fest has-shake" data-bs-toggle="modal" data-bs-target="#ticketModal">
+                <i class="fas fa-ticket-alt me-2"></i>Comprar Boletos
+            </button>
+        </div>
+    </section>
+
+    <!-- Artistas Section -->
+    <section id="artistas" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Artistas Invitados</h2>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card artist-card h-100">
+                        <div class="card-body">
+                            <img src="/chacha/imagenes/1756696892725.jpg" alt="DJ ChaCha" class="artist-img mb-3">
+                            <h3 class="card-title">Alcohólika</h3>
+                            <p class="card-text">Puro metal que despierta la adrenalina y enciende los sentidos.
+Riffs contundentes, voces intensas y un poder que retumba sin límites.
+Una experiencia auténtica y demoledora que deja huella en cada escenario.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card artist-card h-100">
+                        <div class="card-body">
+                            <img src="https://placehold.co/150x150/4ECDC4/white?text=Los+Colorados" alt="Los Colorados" class="artist-img mb-3">
+                            <h3 class="card-title">Los Colorados</h3>
+                            <p class="card-text">La banda que le pondrá mucho color y sabor a la fiesta con sus fusiones musicales únicas.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card artist-card h-100">
+                        <div class="card-body">
+                            <img src="https://placehold.co/150x150/FFE66D/1A535C?text=Salsa+Team" alt="Salsa Team" class="artist-img mb-3">
+                            <h3 class="card-title">Salsa Team</h3>
+                            <p class="card-text">El grupo que hará que todos bailen al ritmo de la salsa más candente y divertida.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programación Section -->
+    <section id="programacion" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Programación</h2>
+            
+            <div class="accordion" id="scheduleAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button color-animation" type="button" data-bs-toggle="collapse" data-bs-target="#dayOne" aria-expanded="true">
+                            <i class="fas fa-calendar-day me-2"></i>Día 1 - Viernes 15 de Julio
+                        </button>
+                    </h2>
+                    <div id="dayOne" class="accordion-collapse collapse show" data-bs-parent="#scheduleAccordion">
+                        <div class="accordion-body">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>16:00 - Apertura de puertas</span>
+                                    <span class="badge bg-primary rounded-pill">Principal</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>18:00 - Taller de baile "Aprende a Chachachá"</span>
+                                    <span class="badge bg-success rounded-pill">Taller</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>20:00 - DJ ChaCha (Set principal)</span>
+                                    <span class="badge bg-danger rounded-pill">Escenario Principal</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed color-animation" type="button" data-bs-toggle="collapse" data-bs-target="#dayTwo">
+                            <i class="fas fa-calendar-day me-2"></i>Día 2 - Sábado 16 de Julio
+                        </button>
+                    </h2>
+                    <div id="dayTwo" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+                        <div class="accordion-body">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>14:00 - Apertura de puertas</span>
+                                    <span class="badge bg-primary rounded-pill">Principal</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>16:00 - Concurso de disfraces "El Más Colorido"</span>
+                                    <span class="badge bg-warning rounded-pill">Concurso</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>19:00 - Los Colorados (En vivo)</span>
+                                    <span class="badge bg-danger rounded-pill">Escenario Principal</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>22:00 - Fuegos artificiales y sorpresas</span>
+                                    <span class="badge bg-info rounded-pill">Sorpresa</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed color-animation" type="button" data-bs-toggle="collapse" data-bs-target="#dayThree">
+                            <i class="fas fa-calendar-day me-2"></i>Día 3 - Domingo 17 de Julio
+                        </button>
+                    </h2>
+                    <div id="dayThree" class="accordion-collapse collapse" data-bs-parent="#scheduleAccordion">
+                        <div class="accordion-body">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>14:00 - Apertura de puertas</span>
+                                    <span class="badge bg-primary rounded-pill">Principal</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>16:00 - Clase de zumba "Baila y Diviértete"</span>
+                                    <span class="badge bg-success rounded-pill">Taller</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>19:00 - Salsa Team (En vivo)</span>
+                                    <span class="badge bg-danger rounded-pill">Escenario Principal</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>22:00 - Gran cierre con todos los artistas</span>
+                                    <span class="badge bg-dark rounded-pill">Final</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ubicación Section -->
+    <section id="ubicacion" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Ubicación</h2>
+            
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">Parque Central</h3>
+                            <p class="card-text">Av. de la Fiesta 123, Ciudad Colorida</p>
+                            <p class="card-text">Un espacio amplio y verde perfecto para disfrutar de tres días de música, baile y diversión.</p>
+                            <div class="mt-4">
+                                <h5>Cómo llegar:</h5>
+                                <ul>
+                                    <li>Metro: Línea 3, estación Fiesta</li>
+                                    <li>Autobús: Líneas 12, 45, 78 y 103</li>
+                                    <li>En biciceta: Estación de bicis 24</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div id="map" style="height: 300px; border-radius: 10px; background-color: #eee; display: flex; align-items: center; justify-content: center;">
+                                <p class="text-center">🌍 Mapa interactivo del Parque Central<br><small>(En una implementación real, aquí iría un mapa de Google Maps o similar)</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Boletos Section -->
+    <section id="boletos" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Boletos</h2>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-header bg-primary text-white py-3">
+                            <h3>Pase 1 Día</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">$25</h4>
+                            <p class="card-text">Acceso para un día del festival</p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="fas fa-check text-success me-2"></i>Acceso a todos los escenarios</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Participación en talleres</li>
+                                <li><i class="fas fa-times text-danger me-2"></i>Área VIP</li>
+                                <li><i class="fas fa-times text-danger me-2"></i>Estacionamiento</li>
+                            </ul>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#whatsappModal" data-tipo="Pase 1 Día" data-precio="25">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-header bg-warning text-dark py-3">
+                            <h3>Pase 3 Días</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">$60</h4>
+                            <p class="card-text">Acceso para los tres días del festival</p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="fas fa-check text-success me-2"></i>Acceso a todos los escenarios</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Participación en talleres</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Área VIP</li>
+                                <li><i class="fas fa-times text-danger me-2"></i>Estacionamiento</li>
+                            </ul>
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#whatsappModal" data-tipo="Pase 3 Días" data-precio="60">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-header bg-success text-white py-3">
+                            <h3>Pase Premium</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">$100</h4>
+                            <p class="card-text">Experiencia completa del festival</p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="fas fa-check text-success me-2"></i>Acceso a todos los escenarios</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Participación en talleres</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Área VIP</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Estacionamiento incluido</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Meet & Greet con artistas</li>
+                            </ul>
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#whatsappModal" data-tipo="Pase Premium" data-precio="100">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h3>CHACHA'T FEST</h3>
+                    <p>El festival más colorido y divertido del año. ¡No te lo pierdas!</p>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="#inicio" class="text-white">Inicio</a></li>
+                        <li><a href="#artistas" class="text-white">Artistas</a></li>
+                        <li><a href="#programacion" class="text-white">Programación</a></li>
+                        <li><a href="#ubicacion" class="text-white">Ubicación</a></li>
+                        <li><a href="#boletos" class="text-white">Boletos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <h3>Síguenos</h3>
+                    <div class="d-flex justify-content-start">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#newsletterModal">
+                            <i class="fas fa-envelope me-2"></i>Suscríbete al newsletter
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4 pt-3 border-top">
+                <p>© 2023 CHACHA'T FEST. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal WhatsApp -->
+    <div class="modal fade" id="whatsappModal" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="whatsappModalLabel">Completar Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="whatsappForm" class="whatsapp-form">
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo:</label>
+                            <input type="text" class="form-control" id="correo" placeholder="@gmail.com" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="precios" class="form-label">Precios:</label>
+                                    <select class="form-select" id="precios">
+                                        <option value="10">$10</option>
+                                        <option value="20">$20</option>
+                                        <option value="30">$30</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cantidad" class="form-label">Cantidad:</label>
+                                    <select class="form-select" id="cantidad">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="mensaje" class="form-label">Mensaje adicional (opcional):</label>
+                            <textarea class="form-control" id="mensaje" rows="3" placeholder="Agregue algún comentario adicional..."></textarea>
+                        </div>
+                        
+                        <div class="alert alert-info mt-3">
+                            <i class="fab fa-whatsapp me-2"></i>Al enviar, se abrirá WhatsApp con los detalles de tu pedido para que completes la compra.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="enviarWhatsApp">
+                        <i class="fab fa-whatsapp me-2"></i>Enviar por WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Newsletter -->
+    <div class="modal fade" id="newsletterModal" tabindex="-1" aria-labelledby="newsletterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="newsletterModalLabel">Suscríbete a nuestro Newsletter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¡No te pierdas las últimas noticias, artistas confirmados y promociones especiales!</p>
+                    <form>
+                        <div class="mb-3">
+                            <label for="newsletterName" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="newsletterName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newsletterEmail" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="newsletterEmail">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="newsletterAgree">
+                            <label class="form-check-label" for="newsletterAgree">
+                                Acepto recibir comunicaciones sobre el festival
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="subscribeNewsletter">Suscribirme</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript personalizado -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crear confeti
+            createConfetti();
+            
+            // Iniciar contador regresivo
+            startCountdown();
+            
+            // Configurar modal de WhatsApp
+            const whatsappModal = document.getElementById('whatsappModal');
+            if (whatsappModal) {
+                whatsappModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const tipo = button.getAttribute('data-tipo');
+                    const precio = button.getAttribute('data-precio');
+                    
+                    // Actualizar el select de precios con el precio correspondiente
+                    const preciosSelect = document.getElementById('precios');
+                    if (preciosSelect) {
+                        // Buscar la opción con el valor del precio
+                        for (let i = 0; i < preciosSelect.options.length; i++) {
+                            if (preciosSelect.options[i].value === precio) {
+                                preciosSelect.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // Actualizar el título del modal
+                    const modalTitle = whatsappModal.querySelector('.modal-title');
+                    modalTitle.textContent = `Comprar: ${tipo}`;
+                    
+                    // Guardar el tipo de boleto en un data attribute
+                    whatsappModal.setAttribute('data-tipo-boleto', tipo);
+                });
+            }
+            
+            // Manejar envío a WhatsApp
+            document.getElementById('enviarWhatsApp').addEventListener('click', function() {
+                // Obtener valores del formulario
+                const correo = document.getElementById('correo').value;
+                const precio = document.getElementById('precios').value;
+                const cantidad = document.getElementById('cantidad').value;
+                const mensajeAdicional = document.getElementById('mensaje').value;
+                const tipoBoleto = document.getElementById('whatsappModal').getAttribute('data-tipo-boleto');
+                
+                // Validar campos obligatorios
+                if (!correo) {
+                    alert('Por favor, ingresa tu  correo gmail');
+                    return;
+                }
+                
+                // Crear el mensaje con la estructura solicitada
+                let mensaje = `Correo:
+                ${correo}. Quiero ${cantidad} boleto(s) de ${tipoBoleto} a precio de $${precio} cada uno.`;
+                
+                // Agregar mensaje adicional si existe
+                if (mensajeAdicional.trim() !== '') {
+                    mensaje += ` Mensaje adicional: ${mensajeAdicional}`;
+                }
+                
+                // Número de WhatsApp (con código de país)
+                const phoneNumber = "59162513670";
+                
+                // Codificar el mensaje para URL
+                const encodedMessage = encodeURIComponent(mensaje);
+                
+                // Crear el enlace de WhatsApp
+                const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                
+                // Cerrar el modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('whatsappModal'));
+                modal.hide();
+                
+                // Abrir WhatsApp en una nueva pestaña
+                setTimeout(function() {
+                    window.open(whatsappURL, '_blank');
+                }, 500);
+            });
+            
+            // Suscripción al newsletter
+            document.getElementById('subscribeNewsletter').addEventListener('click', function() {
+                alert('¡Te has suscrito exitosamente! Pronto recibirás nuestras novedades.');
+                bootstrap.Modal.getInstance(document.getElementById('newsletterModal')).hide();
+            });
+        });
+        
+        function createConfetti() {
+            const colors = ['#FF6B8B', '#4ECDC4', '#FFE66D', '#1A535C', '#F7FFF7'];
+            const container = document.createElement('div');
+            container.classList.add('confetti');
+            document.body.appendChild(container);
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = Math.random() * 100 + 'vh';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.animation = `fall ${Math.random() * 5 + 3}s linear infinite`;
+                container.appendChild(confetti);
+                
+                // Crear keyframes para la animación de caída
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes fall {
+                        0% {
+                            transform: translateY(-100vh) rotate(0deg);
+                        }
+                        100% {
+                            transform: translateY(100vh) rotate(${Math.random() * 360}deg);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        function startCountdown() {
+            const festivalDate = new Date('2025-09-19T15:00:00').getTime();
+            
+            const countdown = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = festivalDate - now;
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').innerText = days.toString().padStart(2, '0');
+                document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+                
+                if (distance < 0) {
+                    clearInterval(countdown);
+                    document.querySelector('.countdown-box').innerHTML = '<h3>¡El festival está en marcha!</h3>';
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
